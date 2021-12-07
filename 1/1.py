@@ -18,7 +18,7 @@ for index, current_item in enumerate(data):
         previous_item = data[index - 1]
         if previous_item - current_item < 0:
             increased += 1
-        print(f'{index}: {previous_item} - {current_item} - {previous_item - current_item < 0} - {increased}')
+        # print(f'{index}: {previous_item} - {current_item} - {previous_item - current_item < 0} - {increased}')
 print(f'Increased: {increased} of {len(data)}')
 
 print('\n===================  PART 2  ======================\n')
@@ -33,7 +33,7 @@ for index, current_item in enumerate(sum_of_three):
         previous_item = sum_of_three[index - 1]
         if previous_item - current_item < 0:
             increased += 1
-        print(f'{index}: {previous_item} - {current_item} - {previous_item - current_item < 0} - {increased}')
+        # print(f'{index}: {previous_item} - {current_item} - {previous_item - current_item < 0} - {increased}')
 print(f'Increased: {increased} of {len(data)}')
 
 

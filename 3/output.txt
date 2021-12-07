@@ -1,0 +1,18 @@
+-------------------------------------------
+
+                   DAY 3
+
+-------------------------------------------
+
+
+===================  PART 1  ======================
+
+Gamma Rate  :                281
+Epsilon Rate:                3814
+Submarine Power consumption: 1071734
+
+===================  PART 2  ======================
+
+Oxygen Generator Rating: 1679
+CO2 Scrubber Rating:     3648
+Life support rating:     6124992
