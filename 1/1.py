@@ -2,15 +2,15 @@ print('\n-------------------------------------------\n')
 print('                   DAY 1')
 print('\n-------------------------------------------\n')
 
-
 # Open and load data
 with open('data.txt', 'r') as open_file:
     rows = open_file.readlines()
 
+##############################################################################
+
+print('\n===================  PART 1  ======================\n')
 # Convert to integer and add to list
 data = [ int(row) for row in rows ]
-
-##############################################################################
 
 increased = 0
 for index, current_item in enumerate(data):
@@ -21,11 +21,7 @@ for index, current_item in enumerate(data):
         print(f'{index}: {previous_item} - {current_item} - {previous_item - current_item < 0} - {increased}')
 print(f'Increased: {increased} of {len(data)}')
 
-
-##############################################################################
-print('\n-------------------------------------------\n')
-
-
+print('\n===================  PART 2  ======================\n')
 sum_of_three = []
 increased = 0
 for index, current_item in enumerate(data):
