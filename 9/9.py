@@ -52,13 +52,12 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
         print("  STOP - Edge hit")
         return
 
-    print("")
-    print(f"....... {middle} {row, col} .........")
+    print(f"\n....... {middle} {row, col} .........")
 
-    up = abs(int(data[row - 1][col]) - middle) if row > 0 else 9999
-    down = abs(int(data[row + 1][col]) - middle) if row < len(data) - 1 else 9999
-    left = abs(int(data[row][col - 1]) - middle) if col > 0 else 0
-    right = abs(int(data[row][col + 1]) - middle) if col < len(data[row]) - 1 else 9999
+    up = int(data[row - 1][col]) - middle if row > 0 else 9999
+    down = int(data[row + 1][col]) - middle if row < len(data) - 1 else 9999
+    left = int(data[row][col - 1]) - middle if col > 0 else 0
+    right = int(data[row][col + 1]) - middle if col < len(data[row]) - 1 else 9999
 
     print(f"Up: {up} | Down: {down} | Left: {left} | Right: {right}")
 
@@ -124,58 +123,55 @@ for basin in basins:
     if basin not in basins_no_duplicates:
         basins_no_duplicates.append(basin)
 
-print("\n\n")
 for basin_index, basin in enumerate(basins_no_duplicates):
-    print(f"----------------  Basin {basin_index + 1}  ----------------")
+    print(f"\n----------------  Basin {basin_index + 1}  ----------------")
     print(f"Basin Locations Count: {len(basin)}")
     print(f"Basin Locations      : {basin}")
-print('')
 
 # Product of three largest basins
 basin_size = [ len(basin) for basin in basins_no_duplicates ]
 basin_size.sort(reverse=True)
-print(f'Basin sizes: {basin_size}')
+print(f'\n\nBasin sizes: {basin_size}')
 
 top_basins_total = math.prod(basin_size[0:3])
 print(f'Product of top three basin sizes: {top_basins_total} ({basin_size[0:3]})')
 
 # Answers Tried:
-# 260400   - Too low (70*62*60)
-# 15624000 - Too high (70*62*60*60)
+#   260400   - Too low (70*62*60)
+#   15624000 - Too high (70*62*60*60)
 
+# ##############################################################################
+# #                                   Plotting
+# ##############################################################################
 
-##############################################################################
-#                                   Plotting
-##############################################################################
+# import numpy as np
+# import matplotlib.pyplot as plt
 
-import numpy as np
-import matplotlib.pyplot as plt
+# print('Plotting ...')
 
-print('Plotting ...')
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
+# for basin_index, basin in enumerate(basins_no_duplicates):
+#     x, y = zip(*basin)
+#     plt.scatter(y, x, s=20, alpha=0.8)
+# ax.set_aspect('equal', adjustable='box')
 
-for basin_index, basin in enumerate(basins_no_duplicates):
-    x, y = zip(*basin)
-    plt.scatter(y, x, s=20, alpha=0.8)
-ax.set_aspect('equal', adjustable='box')
+# # Major ticks every 20, minor ticks every 5
+# major_ticks = np.arange(0, 100, 5)
+# minor_ticks = np.arange(0, 100, 1)
 
-# Major ticks every 20, minor ticks every 5
-major_ticks = np.arange(0, 100, 5)
-minor_ticks = np.arange(0, 100, 1)
+# ax.set_xticks(major_ticks)
+# ax.set_xticks(minor_ticks, minor=True)
+# ax.set_yticks(major_ticks)
+# ax.set_yticks(minor_ticks, minor=True)
 
-ax.set_xticks(major_ticks)
-ax.set_xticks(minor_ticks, minor=True)
-ax.set_yticks(major_ticks)
-ax.set_yticks(minor_ticks, minor=True)
+# ax.set_xlim([0, 100])
+# ax.set_ylim([0, 100])
 
-ax.set_xlim([0, 100])
-ax.set_ylim([0, 100])
+# # And a corresponding grid
+# ax.grid(which='both')
 
-# And a corresponding grid
-ax.grid(which='both')
-
-# Or if you want different settings for the grids:
-ax.grid(which='minor', alpha=0.2)
-plt.show()
+# # Or if you want different settings for the grids:
+# ax.grid(which='minor', alpha=0.2)
+# plt.show()
