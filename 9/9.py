@@ -99,9 +99,6 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
         scan_location(row, col + 1, data, basin_index)
 
     print(f"LAST --- Up: {up} | Down: {down} | Left: {left} | Right: {right}")
-    # print(f"Basin locations: {basins[basin_index]}")
-
-    return
 
 
 for basin_index, (row_low_point, col_low_point) in enumerate(low_point_coordinates):
@@ -118,11 +115,8 @@ for basin_index, (row_low_point, col_low_point) in enumerate(low_point_coordinat
         basin_index
     )
 
-
 # Sort the basin location areas
 [ basin.sort() for basin in basins ]
-
-print(len(basins))
 
 # Remove duplicate basins
 basins_no_duplicates = []
@@ -130,40 +124,40 @@ for basin in basins:
     if basin not in basins_no_duplicates:
         basins_no_duplicates.append(basin)
 
-print(len(basins_no_duplicates))
-
 print("\n\n")
 for basin_index, basin in enumerate(basins_no_duplicates):
-    print("")
-    print(f"Basin Number:    {basin_index + 1}")
-    print(f"Basin Location Count: {len(basin)}")
-    print(f"Basin Locations: {basin}")
+    print(f"----------------  Basin {basin_index + 1}  ----------------")
+    print(f"Basin Locations Count: {len(basin)}")
+    print(f"Basin Locations      : {basin}")
+print('')
 
 # Product of three largest basins
-basin_location_count = [ len(basin) for basin in basins_no_duplicates ]
-basin_location_count.sort(reverse=True)
-print(basin_location_count)
-top_basins_total = math.prod(basin_location_count[0:3])
+basin_size = [ len(basin) for basin in basins_no_duplicates ]
+basin_size.sort(reverse=True)
+print(f'Basin sizes: {basin_size}')
 
-print(f'Product of top three basin sizes: {top_basins_total}')
+top_basins_total = math.prod(basin_size[0:3])
+print(f'Product of top three basin sizes: {top_basins_total} ({basin_size[0:3]})')
 
-# 260400 - Too low (70*62*60)
+# Answers Tried:
+# 260400   - Too low (70*62*60)
 # 15624000 - Too high (70*62*60*60)
 
 
-
+##############################################################################
+#                                   Plotting
+##############################################################################
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+print('Plotting ...')
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
 for basin_index, basin in enumerate(basins_no_duplicates):
     x, y = zip(*basin)
-    print(x)
-    print(y)
-    # y = [ item * -1 for item in y ]
     plt.scatter(y, x, s=20, alpha=0.8)
 ax.set_aspect('equal', adjustable='box')
 
