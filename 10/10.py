@@ -8,27 +8,6 @@ from pprint import pprint
 with open("data.txt", "r") as open_file:
     rows = open_file.readlines()
 data = [(row.strip("\n")) for row in rows]
-pprint(data, width=50)
-
-##############################################################################
-
-'''
-# SAMPLE OUTLINE:
-
-INDEX   PATTERN                     STATUS      ERROR                             SCORE
-0       [({(<(())[]>[[{[]{<()<>>    incomplete
-1       [(()[<>])]({[<{<<[]>>(      incomplete
-2       {([(<{}[<>[]}>{[]{[(<()>    corrupted - Expected ], but found } instead - 1197
-3       (((({<>}<{<{<>}{[]{[]{}     incomplete
-4       [[<[([]))<([[{}[[()]]]      corrupted - Expected ], but found ) instead - 3
-5       [{[{({}]{}}([{[{{{}}([]     corrupted - Expected ), but found ] instead - 57
-6       {<[[]]>}<{[{[{[]{()[[[]     incomplete
-7       [<(<(<(<{}))><([]([]()      corrupted - Expected >, but found ) instead - 3
-8       <{([([[(<>()){}]>(<<{{      corrupted - Expected ], but found > instead - 25137
-9       <{([{{}}[<[[[<>{}]]]>[]]    incomplete
-
-TOTAL: 3 + 3 + 57 + 1197 + 25137 = 26397
-'''
 
 ##############################################################################
 
@@ -47,65 +26,64 @@ chunk_pair = {
     '<': '>'
 }
 
-sample_answers = {
-    0: 'incomplete',
-    1: 'incomplete',
-    2: 'corrupted - Expected ], but found } instead',
-    3: 'incomplete',
-    4: 'corrupted - Expected ], but found ) instead',
-    5: 'corrupted - Expected ), but found ] instead',
-    6: 'incomplete',
-    7: 'corrupted - Expected >, but found ) instead',
-    8: 'corrupted - Expected ], but found > instead',
-    9: 'incomplete',
-}
-
-#                |
-# [{}[()[[]]]()][}
-#                   |
-# <{([([ [(<>()){}] >(<<{{
-
-
 syntax_error_score = 0
+corrupted_row_indexes = []
 
 for row_index, row in enumerate(data):
-    print(f'\n\n=========== {row_index} ==============')
-    print(row)
-    # print(sample_answers[row_index])
-
-    opens = [ row[0] ]
-    corrupt_syntax = False
-
-    # Finding incomplete chunk opening chars
+    open_chars = [ row[0] ]
     for index, char in enumerate(row[1:]):
-        print(f'\n---- {char} -----')
-        print(f'    Last open: {opens[-1] if opens else "NONE"}')
-
-        if char in chunk_pair.keys():
-            # Opening Chunk
-            print(f'OPEN: {char}')
-            opens.append(char)
+        if char in chunk_pair:
+            # Opening character
+            open_chars.append(char)
         elif char in chunk_pair.values():
-            # Closing Chunk
-            print(f'CLOSE: {char}')
-            if char == chunk_pair[opens[-1]]:
-                print('MATCH CLOSE')
-                if opens:
-                    opens.pop()
+            # Closing character
+            if char == chunk_pair[open_chars[-1]]:
+                # Closing character matches the last opening character
+                if open_chars:
+                    open_chars.pop()
             else:
-                print('CORRUPT !!!! AAAAHHH')
-                if not corrupt_syntax:
-                    corrupt_syntax = True
+                if row_index not in corrupted_row_indexes:
                     syntax_error_score += syntax_error_points[char]
-    if opens:
-        print('Syntax Incomplete:   True')
-    if corrupt_syntax:
-        print('Syntax Corrupt:      True')
+                    corrupted_row_indexes.append(row_index)
 
-print(f'Syntax Error Score: {syntax_error_score}')
+print(f'Corrupted Row Indexes:  {corrupted_row_indexes}')
+print(f'Syntax Error Score:     {syntax_error_score}')
 
 
 
 print("\n===================  PART 2  ======================\n")
 
+char_completion_scores = {
+    ')': 1,
+    ']': 2,
+    '}': 3,
+    '>': 4
+}
 
+# Discard corrupted rows
+data = [row for row_index, row in enumerate(data) if row_index not in corrupted_row_indexes]
+
+row_completion_scores = []
+for row_index, row in enumerate(data):
+    # Getting all opening chars
+    open_chars = [ row[0] ]
+    for index, char in enumerate(row[1:]):
+        if char in chunk_pair.keys():
+            open_chars.append(char)
+        elif char in chunk_pair.values():
+            if char == chunk_pair[open_chars[-1]]:
+                if open_chars:
+                    open_chars.pop()
+
+    # Getting closing characters to all opened characters left
+    close_chars = [ chunk_pair[open_char] for open_char in open_chars[::-1] ]
+
+    # Finding completion score
+    row_completion_score = 0
+    for close_char in close_chars:
+        row_completion_score = row_completion_score*5 + char_completion_scores[close_char]
+    row_completion_scores.append(row_completion_score)
+
+# Middle value of sorted scores
+row_completion_scores.sort()
+print(f'Completion scores middle value: {row_completion_scores[int(len(row_completion_scores) / 2)]}')
