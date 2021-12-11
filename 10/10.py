@@ -2,8 +2,6 @@ print("\n-------------------------------------------\n")
 print("                   DAY 10")
 print("\n-------------------------------------------\n")
 
-from pprint import pprint
-
 # Open and load data
 with open("data.txt", "r") as open_file:
     rows = open_file.readlines()
