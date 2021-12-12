@@ -2,13 +2,8 @@ print("\n-------------------------------------------\n")
 print("                   DAY 10")
 print("\n-------------------------------------------\n")
 
-<<<<<<< HEAD
 # Open and load input_data
 with open("input.txt", "r") as open_file:
-=======
-# Open and load data
-with open("data.txt", "r") as open_file:
->>>>>>> 8fc1af99713d2edbf2d06a91ea17c340c341b9fc
     rows = open_file.readlines()
 input_data = [(row.strip("\n")) for row in rows]
 
