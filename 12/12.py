@@ -7,7 +7,7 @@ print("                   DAY 12")
 print("\n-------------------------------------------\n")
 
 # Open and load data
-with open("input.txt", "r") as open_file:
+with open("sample.txt", "r") as open_file:
     rows = open_file.readlines()
 data = [(row.strip("\n")) for row in rows]
 
