@@ -3,7 +3,7 @@ from copy import deepcopy
 
 
 print("\n-------------------------------------------\n")
-print("                   DAY 11")
+print("                   DAY 12")
 print("\n-------------------------------------------\n")
 
 # Open and load data
