@@ -1,15 +1,15 @@
+from pprint import pprint
+
+
 print('\n-------------------------------------------\n')
 print('                   DAY 8')
 print('\n-------------------------------------------\n')
 
-from pprint import pprint
-from typing import Mapping
-
 # Open and load data
 with open('sample-1.txt', 'r') as open_file:
     rows = open_file.readlines()
-data = [ (row.strip('\n')) for row in rows ]
-pprint(data, width=120)
+input_data = [ (row.strip('\n')) for row in rows ]
+pprint(input_data, width=120)
 
 ##############################################################################
 
@@ -30,7 +30,7 @@ letters_per_digit = {
 unique_segments_digits = [1, 4, 7, 8]
 unique_segments_values = [2, 4, 3, 7]
 
-output_values =  [ row.split(' | ')[1] for row in data ]
+output_values =  [ row.split(' | ')[1] for row in input_data ]
 
 total_unique_segments = 0
 for output_value in output_values:
@@ -41,15 +41,13 @@ for output_value in output_values:
 print(f'Output Values Unique Segments: {total_unique_segments}')
 
 
-
-
 print('\n===================  PART 2  ======================\n')
 
 # Map signal wires (a, b, etc) to digit segments (direction)
 # Known digits:   1, 4, 7, 8
 # Unknown digits: 0, 2, 3, 5, 6, 9
 
-signal_patterns =  [ row.split(' | ')[0] for row in data ]
+signal_patterns =  [ row.split(' | ')[0] for row in input_data ]
 pprint(signal_patterns)
 
 digits_pattern_known = {

@@ -1,20 +1,20 @@
+import math
+
+
 print("\n-------------------------------------------\n")
 print("                   DAY 9")
 print("\n-------------------------------------------\n")
 
-from pprint import pprint
-import math
-
 # Open and load data
-with open("data.txt", "r") as open_file:
+with open("input.txt", "r") as open_file:
     rows = open_file.readlines()
-data = [(row.strip("\n")) for row in rows]
-pprint(data, width=50)
-
+input_data = [(row.strip("\n")) for row in rows]
 
 ##############################################################################
 
 print("\n===================  PART 1  ======================\n")
+
+data = input_data
 
 risk_level_total = 0
 low_point_coordinates = []
@@ -37,7 +37,6 @@ for row in range(len(data)):
             risk_level_total += middle + 1
             low_point_coordinates.append((row, col))
 
-print(f"Low Point coordinates (row, column): {low_point_coordinates}")
 print(f"Risk Level Total: {risk_level_total}")
 
 
@@ -49,24 +48,17 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
     try:
         middle = int(data[row][col])
     except:
-        print("  STOP - Edge hit")
         return
-
-    print(f"\n....... {middle} {row, col} .........")
-
     up = int(data[row - 1][col]) - middle if row > 0 else 9999
     down = int(data[row + 1][col]) - middle if row < len(data) - 1 else 9999
     left = int(data[row][col - 1]) - middle if col > 0 else 0
     right = int(data[row][col + 1]) - middle if col < len(data[row]) - 1 else 9999
-
-    print(f"Up: {up} | Down: {down} | Left: {left} | Right: {right}")
 
     if (
         up == 1
         and (row - 1, col) not in basins[basin_index]
         and int(data[row - 1][col]) != 9
     ):
-        print(f"  Step UP to {row - 1, col} ({data[row - 1][col]})")
         basins[basin_index].append((row - 1, col))
         scan_location(row - 1, col, data, basin_index)
 
@@ -75,7 +67,6 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
         and (row + 1, col) not in basins[basin_index]
         and int(data[row + 1][col]) != 9
     ):
-        print(f"  Step DOWN to {row + 1, col} ({data[row + 1][col]})")
         basins[basin_index].append((row + 1, col))
         scan_location(row + 1, col, data, basin_index)
 
@@ -84,7 +75,6 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
         and (row, col - 1) not in basins[basin_index]
         and int(data[row][col - 1]) != 9
     ):
-        print(f"  Step LEFT to {row, col - 1} ({data[row][col - 1]})")
         basins[basin_index].append((row, col - 1))
         scan_location(row, col - 1, data, basin_index)
 
@@ -93,19 +83,11 @@ def scan_location(row: int, col: int, data: list, basin_index: int) -> None:
         and (row, col + 1) not in basins[basin_index]
         and int(data[row][col + 1]) != 9
     ):
-        print(f"  Step RIGHT to {row, col + 1} ({data[row][col + 1]})")
         basins[basin_index].append((row, col + 1))
         scan_location(row, col + 1, data, basin_index)
 
-    print(f"LAST --- Up: {up} | Down: {down} | Left: {left} | Right: {right}")
-
-
 for basin_index, (row_low_point, col_low_point) in enumerate(low_point_coordinates):
     low_point = data[row_low_point][col_low_point]
-
-    print("\n")
-    print(f"========= BASIN: {basin_index} - LP: {low_point} {row_low_point, col_low_point} ===========")
-
     basins.append([(row_low_point, col_low_point)])
     scan_location(
         row_low_point,
@@ -123,22 +105,13 @@ for basin in basins:
     if basin not in basins_no_duplicates:
         basins_no_duplicates.append(basin)
 
-for basin_index, basin in enumerate(basins_no_duplicates):
-    print(f"\n----------------  Basin {basin_index + 1}  ----------------")
-    print(f"Basin Locations Count: {len(basin)}")
-    print(f"Basin Locations      : {basin}")
-
 # Product of three largest basins
 basin_size = [ len(basin) for basin in basins_no_duplicates ]
 basin_size.sort(reverse=True)
-print(f'\n\nBasin sizes: {basin_size}')
 
 top_basins_total = math.prod(basin_size[0:3])
 print(f'Product of top three basin sizes: {top_basins_total} ({basin_size[0:3]})')
 
-# Answers Tried:
-#   260400   - Too low (70*62*60)
-#   15624000 - Too high (70*62*60*60)
 
 # ##############################################################################
 # #                                   Plotting

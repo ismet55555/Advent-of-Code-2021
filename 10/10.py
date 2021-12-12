@@ -2,12 +2,10 @@ print("\n-------------------------------------------\n")
 print("                   DAY 10")
 print("\n-------------------------------------------\n")
 
-from pprint import pprint
-
-# Open and load data
-with open("data.txt", "r") as open_file:
+# Open and load input_data
+with open("input.txt", "r") as open_file:
     rows = open_file.readlines()
-data = [(row.strip("\n")) for row in rows]
+input_data = [(row.strip("\n")) for row in rows]
 
 ##############################################################################
 
@@ -28,8 +26,7 @@ chunk_pair = {
 
 syntax_error_score = 0
 corrupted_row_indexes = []
-
-for row_index, row in enumerate(data):
+for row_index, row in enumerate(input_data):
     open_chars = [ row[0] ]
     for index, char in enumerate(row[1:]):
         if char in chunk_pair:
@@ -50,7 +47,6 @@ print(f'Corrupted Row Indexes:  {corrupted_row_indexes}')
 print(f'Syntax Error Score:     {syntax_error_score}')
 
 
-
 print("\n===================  PART 2  ======================\n")
 
 char_completion_scores = {
@@ -61,10 +57,10 @@ char_completion_scores = {
 }
 
 # Discard corrupted rows
-data = [row for row_index, row in enumerate(data) if row_index not in corrupted_row_indexes]
+input_data = [row for row_index, row in enumerate(input_data) if row_index not in corrupted_row_indexes]
 
 row_completion_scores = []
-for row_index, row in enumerate(data):
+for row_index, row in enumerate(input_data):
     # Getting all opening chars
     open_chars = [ row[0] ]
     for index, char in enumerate(row[1:]):

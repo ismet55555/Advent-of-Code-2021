@@ -1,13 +1,13 @@
+from pprint import pprint
+from copy import deepcopy
+
+
 print("\n-------------------------------------------\n")
 print("                   DAY 11")
 print("\n-------------------------------------------\n")
 
-from pprint import pprint
-from copy import deepcopy
-import sys
-
 # Open and load data
-with open("data.txt", "r") as open_file:
+with open("input.txt", "r") as open_file:
     rows = open_file.readlines()
 data = [(row.strip("\n")) for row in rows]
 

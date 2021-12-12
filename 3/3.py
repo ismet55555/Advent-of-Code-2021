@@ -1,21 +1,23 @@
+from copy import deepcopy
+
+
 print('\n-------------------------------------------\n')
 print('                   DAY 3')
 print('\n-------------------------------------------\n')
 
-
 # Open and load data
-with open('data.txt', 'r') as open_file:
+with open('input.txt', 'r') as open_file:
     rows = open_file.readlines()
-data = [ (row.strip('\n')) for row in rows ]
+input_data = [ (row.strip('\n')) for row in rows ]
 
 ##############################################################################
 
 print('\n===================  PART 1  ======================\n')
 
 columns = []
-for bit_index in range(len(data[0])):
+for bit_index in range(len(input_data[0])):
     column = []
-    for row in data:
+    for row in input_data:
         column.append(row[bit_index])
     columns.append(''.join(column))
 
@@ -40,14 +42,12 @@ print(f'Submarine Power consumption: {submarine_power}')
 
 print('\n===================  PART 2  ======================\n')
 
-from copy import deepcopy
-
 def find_rating(rating_type: str) -> int:
     """Finding Oxygen Generator or CO2 Scrubber Rating"""
-    data_copy = deepcopy(data)
-    for bit_index in range(len(data[0])):
+    data = deepcopy(input_data)
+    for bit_index in range(len(input_data[0])):
         column = []
-        for row in data_copy:
+        for row in data:
             column.append(row[bit_index])
 
         item_1 = column.count('0')
@@ -58,17 +58,17 @@ def find_rating(rating_type: str) -> int:
             item_1, item_2 = item_2, item_1
 
         if item_1 > item_2:
-            data_copy = [row for row in data_copy if row[bit_index] == '0']
+            data = [row for row in data if row[bit_index] == '0']
         elif item_1 == item_2:
             keep_bit = '1' if rating_type == 'oxygen' else '0'
-            data_copy = [row for row in data_copy if row[bit_index] == keep_bit]
+            data = [row for row in data if row[bit_index] == keep_bit]
         else:
-            data_copy = [row for row in data_copy if row[bit_index] == '1']
+            data = [row for row in data if row[bit_index] == '1']
 
-        if len(data_copy) == 1:
+        if len(data) == 1:
             break
 
-    return int(data_copy[0], 2)
+    return int(data[0], 2)
 
 oxygen_generator_rating = find_rating(rating_type="oxygen")
 co2_scrubber_rating = find_rating(rating_type="co2")
